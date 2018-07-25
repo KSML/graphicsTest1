@@ -100,13 +100,13 @@ export default class Card extends Component{
 }
 const styles = StyleSheet.create({
     card:{
-        width:36,
-        height:50,
+        width:54,
+        height:75,
         alignContent: "center"
     },
     buttonCard:{
-        width:36,
-        height:50
+        width:54,
+        height:75
     }
 })
 /*

@@ -15,7 +15,7 @@ import {
   Dimensions
 } from 'react-native';
 
-import Card from './components/Card';
+import Trick from './components/Hearts/Trick';
 
 export default class App extends Component {
   constructor(props){
@@ -34,30 +34,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <View style={styles.hand}>
-        {
-        this.state.hand.map((prop) => {
-          return(
-            <Card
-              key={prop.key}
-              value={prop.key}
-              cardActive={prop.active}
-            />
-          );
-        })
-        }
-      </View>
+      <Trick/>
     )
   }
 }
-
-const styles = StyleSheet.create({
-    hand:{
-      width:Dimensions.get('window').width,
-      height:50,
-      left:0,
-      position:'absolute',
-      top:Dimensions.get('window').height-74,
-      flexDirection:'row'
-    }
-})
