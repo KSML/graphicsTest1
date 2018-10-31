@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
+  Text,
   TouchableOpacity,
   Alert,
   Image,
@@ -18,10 +19,13 @@ export default class Trick extends Component{
             //hand[52] where each index represents a card and the possible value
             //at an index is 0,1,2,3 where 0 is you 1 is left, 2 is across, 3 is right
             hand: [0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3],
-            onTable: [-1,-1,-1,-1]
+            //onTable is what is in the middle. edited when someone plays a card
+            onTable: [-1,-1,-1,-1],
         };
         this.rowWrapStyle = this.rowWrapStyle.bind(this)
-
+        this.leftCardStack=this.leftCardStack.bind(this)
+        this.acrossCardStack=this.acrossCardStack.bind(this)
+        this.rightCardStack=this.rightCardStack.bind(this)
     }
 
     rowWrapStyle(){
@@ -47,70 +51,150 @@ export default class Trick extends Component{
         }
     }
 
+    // WEST
+    // returns # of cards that WEST has
+    leftCardStack(playerOwn,index){
+        var count = 0
+        this.state.hand.map((value,index)=>{
+            if(value==1){
+                count = count+1
+            }
+        })
+        return(
+            "x" + count
+         );
+    }
+
+    //NORTH
+    // returns # of cards that NORTH has
+    acrossCardStack(playerOwn,index){
+        var count = 0
+        this.state.hand.map((value,index)=>{
+            if(value==2){
+                count = count+1
+            }
+        })
+        return(
+            "x" + count
+         );
+    }
+
+    //EAST
+    // returns # of cards that EAST has
+    rightCardStack(playerOwn,index){
+        var count = 0
+        this.state.hand.map((value,index)=>{
+            if(value==3){
+                count = count+1
+            }
+        })
+        return(
+            "x" + count
+         );
+    }
+
     render() {
         return (
-          <View>
-            <View style={[styles.hand, this.rowWrapStyle()]}>
-                {
-                    // map(1 is value, 2 is index, 3 is array map)
-                    this.state.hand.map((playerOwn, index) => {
-                        if(playerOwn==0){
-                            return(
-                                <Card
-                                key={index}
-                                value={index}
-                                cardActive={true}
-                                />
-                            );
+            <View>
+                {/* Player Hand */}
+                <View style={[styles.hand, this.rowWrapStyle()]}>
+                    {
+                        // map(1 is value, 2 is index, 3 is array map)
+                        // idea: iterate through hand, if value (player own) is 0 (you) then display it
+                        this.state.hand.map((playerOwn, index) => {
+                            if(playerOwn==0){
+                                return(
+                                    <Card
+                                    key={index}
+                                    value={index}
+                                    cardActive={true}
+                                    />
+                                );
+                            }
+                        })
+                    }
+                </View>
+
+                {/* Left */}
+                <View style={styles.left}>
+                    <View style={{flex:1,position:'absolute',right:20,zIndex:2}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:10,zIndex:3}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:0,zIndex:4}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <Text style={{flex:1,position:'absolute',zIndex:5,color:'#ffffff',fontWeight:'bold',textShadowColor:'black',textShadowOffset:{width:1, height:1},textShadowRadius:1,fontSize:18,right:10,transform:[{rotate: '270deg'}],}}>
+                        {
+                            this.leftCardStack()
                         }
-                    })
-                }
-            </View>
-            <View style={styles.left}>
-                {
-                    this.state.hand.map((playerOwn,index) => {
-                        if(playerOwn==1){
-                            return(
-                                <Card
-                                key={index}
-                                value={52}
-                                cardActive={false}
-                                />
-                            );
+                    </Text>
+                </View>
+
+                {/* Across */}
+                <View style={styles.across}>
+                    <View style={{flex:1,position:'absolute',right:20,zIndex:2}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:10,zIndex:3}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:0,zIndex:4}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <Text style={{flex:1,position:'absolute',zIndex:5,color:'#ffffff',fontWeight:'bold',textShadowColor:'black',textShadowOffset:{width:1, height:1},textShadowRadius:1,fontSize:18,right:10,transform:[{rotate: '180deg'}],}}>
+                        {
+                            this.acrossCardStack()
                         }
-                    })
-                }
-            </View>
-            <View style={styles.across}>
-                {
-                    this.state.hand.map((playerOwn,index) => {
-                        if(playerOwn==2){
-                            return(
-                                <Card
-                                key={index}
-                                value={52}
-                                cardActive={false}
-                                />
-                            );
+                    </Text>
+                </View>
+
+                {/* Right */}
+                <View style={styles.right}>
+                    <View style={{flex:1,position:'absolute',right:20,zIndex:2}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:10,zIndex:3}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <View style={{flex:1,position:'absolute',right:0,zIndex:4}}>
+                            <Card
+                            value={52}
+                            cardActive={false}
+                            />
+                    </View>
+                    <Text style={{flex:1,position:'absolute',zIndex:5,color:'#ffffff',fontWeight:'bold',textShadowColor:'black',textShadowOffset:{width:1, height:1},textShadowRadius:1,fontSize:18,right:10,transform:[{rotate: '90deg'}],}}>
+                        {
+                            this.rightCardStack()
                         }
-                    })
-                }
-            </View>
-            <View style={styles.right}>
-                {
-                    this.state.hand.map((playerOwn,index) => {
-                        if(playerOwn==3){
-                            return(
-                                <Card
-                                key={index}
-                                value={52}
-                                cardActive={false}
-                                />
-                            );
-                        }
-                    })
-                }
-            </View>
+                    </Text>
+                </View>
           </View>
         )
       }
@@ -131,41 +215,46 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     left:{
-        maxWidth:Dimensions.get('window').width,
-        width:Dimensions.get('window').width,
-        height:150,
-        right:132,
-        top:250,
+        width:75,
+        height:75,
+        right:Dimensions.get('window').width-75,
+        top:(Dimensions.get('window').height/2)-75,
         position:'absolute',
         flexDirection:'row',
-        alignItems:'flex-start',
-        flexWrap:'wrap',
+        alignItems:'center',
         justifyContent:'center',
-        transform:[{rotate: '90deg'}]
+        transform:[{rotate: '90deg'}],
+        // just for debug
+        borderRadius:4,
+        borderWidth:0.5,
+        borderColor:'black',
     },
     across:{
-        maxWidth:Dimensions.get('window').width,
-        width:Dimensions.get('window').width,
-        height:150,
+        width:75,
+        height:75,
+        left:(Dimensions.get('window').width/2),
         position:'absolute',
         flexDirection:'row',
-        alignItems:'flex-start',
-        flexWrap:'wrap',
+        alignItems:'center',
         justifyContent:'center',
-        transform:[{rotate: '180deg'}]
+        transform:[{rotate: '180deg'}],
+        borderRadius:4,
+        borderWidth:0.5,
+        borderColor:'black',
     },
     right:{
-        maxWidth:Dimensions.get('window').width,
-        width:Dimensions.get('window').width,
-        height:150,
-        left:132,
-        top:250,
+        width:75,
+        height:75,
+        left:(Dimensions.get('window').width-75),
+        top:(Dimensions.get('window').height/2)-75,
         position:'absolute',
         flexDirection:'row',
-        alignItems:'flex-start',
-        flexWrap:'wrap',
+        alignItems:'center',
         justifyContent:'center',
-        transform:[{rotate: '270deg'}]
+        transform:[{rotate: '270deg'}],
+        borderRadius:4,
+        borderWidth:0.5,
+        borderColor:'black',
     },
     center:{
 
